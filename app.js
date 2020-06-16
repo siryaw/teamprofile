@@ -90,3 +90,51 @@ const internQuestions = () => {
         })
 }
 
+const engineerQuestions = () => {
+    inquirer.prompt([
+
+        {
+            type: 'input',
+            message: 'What is the engineers name?',
+            name: 'engineerName'
+        },
+        {
+            type: 'input',
+            message: 'What is engineers employee id?',
+            name: 'id',
+        },
+        {
+            type: 'input',
+            message: 'What is the engineers email?',
+            name: 'email',
+        },
+        {
+            type: 'input',
+            message: 'What is the engineers github username?',
+            name: 'github',
+        },
+        {
+            type: 'confirm',
+            message: 'Do you need to enter another employee?',
+            name: 'addCheck',
+        },
+
+    ])
+        .then(answers => {
+            const engineer = new Engineer(answers.engineerName, answers.id, answers.email, answers.github);
+            employeeArr.push(engineer);
+
+            console.log(employeeArr);
+
+            if (answers.addCheck) {
+                initialQuestion();
+            } else {
+                let data = render(employeeArr);
+                fs.writeFile(outputPath, data, (err) => {
+                    if (err) throw err;
+                    console.log(chalk.green('The file has been saved!'));
+                });
+            }
+        })
+}
+

@@ -138,3 +138,52 @@ const engineerQuestions = () => {
         })
 }
 
+const managerQuestions = () => {
+    inquirer.prompt([
+
+        {
+            type: 'input',
+            message: 'What is the managers name?',
+            name: 'managerName'
+        },
+        {
+            type: 'input',
+            message: 'What is the managers id?',
+            name: 'id',
+        },
+        {
+            type: 'input',
+            message: 'What is the managers email?',
+            name: 'email',
+        },
+        {
+            type: 'input',
+            message: 'What is the managers office number?',
+            name: 'officeNumber',
+        },
+        {
+            type: 'confirm',
+            message: 'Do you need to enter another employee?',
+            name: 'addCheck',
+        },
+
+    ])
+        .then(answers => {
+
+            const manager = new Manager(answers.managerName, answers.id, answers.email, answers.officeNumber);
+            employeeArr.push(manager);
+
+            console.log(employeeArr);
+
+            if (answers.addCheck) {
+                initialQuestion();
+            } else {
+                let data = render(employeeArr);
+                fs.writeFile(outputPath, data, (err) => {
+                    if (err) throw err;
+                    console.log(chalk.green('The file has been saved!'));
+                });
+            }
+
+        })
+}

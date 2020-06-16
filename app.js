@@ -40,3 +40,53 @@ const initialQuestion = () => {
         })
 }
 
+initialQuestion();
+
+const internQuestions = () => {
+    inquirer.prompt([
+
+        {
+            type: 'input',
+            message: 'What is the interns name?',
+            name: 'internName'
+        },
+        {
+            type: 'input',
+            message: 'What is the interns employee id?',
+            name: 'id',
+        },
+        {
+            type: 'input',
+            message: 'What is the interns email?',
+            name: 'email',
+        },
+        {
+            type: 'input',
+            message: 'What is the interns school?',
+            name: 'school',
+        },
+        {
+            type: 'confirm',
+            message: 'Do you need to enter another employee?',
+            name: 'addCheck',
+        },
+
+    ])
+        .then(answers => {
+            const intern = new Intern(answers.internName, answers.id, answers.email, answers.school);
+            employeeArr.push(intern);
+
+            console.log(employeeArr);
+
+            if (answers.addCheck) {
+                initialQuestion();
+            } else {
+                let data = render(employeeArr);
+                fs.writeFile(outputPath, data, (err) => {
+                    if (err) throw err;
+                    console.log(chalk.green('The file has been saved!'));
+                });
+            }
+        })
+}
+
